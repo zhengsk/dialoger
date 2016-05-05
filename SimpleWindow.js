@@ -48,6 +48,8 @@ SimpleWindow.prototype = {
 		this._create(); // 创建窗口元素
 
 		this._setStatus();
+
+		this._headerMax(); // 双击最大化
 	},
 
 	// 创建窗口
@@ -93,7 +95,7 @@ SimpleWindow.prototype = {
 
 		this.show();
 
-		this.maximize();
+		// this.maximize();
 
 		this.collapse();
 
@@ -201,17 +203,43 @@ SimpleWindow.prototype = {
 
 	// 最大化窗口
 	maximize : function() {
-		
+		var opts = this.options;
+		// 保存原始状态
+		this.preStatus = {
+			left : opts.left,
+			top : opts.top,
+			width : opts.width,
+			height : opts.height
+		}
+
+		this.resizeTo(
+			opts.parent.clientWidth,
+			opts.parent.clientHeight
+		);
+
+		this.moveTo(0, 0);
+		this.options.isMaximize = true;
 	},
 
 	// 恢复窗口大小
 	restore : function() {
-		// body...
+		var preStatus = this.preStatus;
+		this.resizeTo(preStatus.width, preStatus.height);
+		this.moveTo(preStatus.left, preStatus.top);
+
+		this.options.isMaximize = false;
 	},
 
 	// 折叠窗口
 	collapse : function() {
 		
+	},
+
+	_headerMax : function(){
+		var _self = this;
+		Util.event.on(this.winHeader, 'dblclick', function(){
+			_self.options.isMaximize ? _self.restore() : _self.maximize();
+		});
 	},
 
 	// 销毁窗口
