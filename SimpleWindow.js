@@ -87,7 +87,7 @@ SimpleWindow.prototype = {
 	
 	_setStatus : function(argument) {
 		var opts = this.options;
-		
+
 		this.moveTo(opts.left, opts.top);
 		this.resizeTo(opts.width, opts.height);
 
@@ -96,14 +96,63 @@ SimpleWindow.prototype = {
 		this.maximize();
 
 		this.collapse();
+
+		this.setDragAble();
+	},
+
+	// 设置可拖动
+	setDragAble : function(argument) {
+		var _self = this;
+
+		Util.event.on(_self.winHeader, "mousedown", dragDown);
+
+		var startPosition, // 窗口起始位置
+			startAxis	// 鼠标起始位置
+
+		// 点击拖动绑定
+		function dragDown(e) {
+			e = Util.event.getEvent(e);
+
+			startAxis = Util.event.getPageAxis(e);
+			startPosition = {
+				left : _self.options.left,
+				top : _self.options.top
+			}
+
+			Util.event.on(document, 'mousemove', dragMove);
+			Util.event.on(document, 'mouseup', dragStop);
+		}
+
+		// 移动过程
+		function dragMove(e) {
+			e = Util.event.getEvent(e);
+			var endAxis =  Util.event.getPageAxis(e);
+
+			var changedAxis = {
+				x : endAxis.x - startAxis.x,
+				y : endAxis.y - startAxis.y
+			}
+
+			_self.moveTo(
+				startPosition.left + changedAxis.x,
+				startPosition.top + changedAxis.y
+			);
+		}
+
+		// 停止拖动
+		function dragStop(e){
+			e = Util.event.getEvent(e);
+			Util.event.off(document, 'mousemove', dragMove)
+			Util.event.off(document, 'mouseup', dragStop)
+		}
 	},
 
 
 	// 移动到指定位置
 	moveTo : function(left, top) {
 		var style = this.winElement.style;
-		left !== null && (style.left = left + "px");
-		top !== null && (style.top = top + "px");
+		left !== null && (style.left = left + "px", this.options.left = left);
+		top !== null && (style.top = top + "px", this.options.top = top);
 	},
 
 	// 改变大小

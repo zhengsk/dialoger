@@ -21,6 +21,28 @@ var Util = {
 	    },
 		getEvent : function (e) {
 			return e || window.event;
+		},
+
+		getPageAxis: function(event) {
+
+		    if(event.pageX || event.pageY){
+		        return {
+		            x : event.pageX,
+		            y : event.pageY
+		        }
+		    }
+
+		    var doc = document.documentElement;
+		    var body = document.body;
+
+		    return {
+		        x : event.clientX +
+		            ( doc && doc.scrollLeft || body && body.scrollLeft || 0 ) -
+		            ( doc && doc.clientLeft || body && body.clientLeft || 0 ),
+		        y : event.clientY +
+		            ( doc && doc.scrollTop  || body && body.scrollTop  || 0 ) -
+		            ( doc && doc.clientTop  || body && body.clientTop  || 0 )
+		    }
 		}
 	},
 
