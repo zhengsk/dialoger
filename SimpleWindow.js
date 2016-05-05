@@ -114,9 +114,11 @@ SimpleWindow.prototype = {
 
 		// 点击拖动绑定
 		function dragDown(e) {
-			e = Util.event.getEvent(e);
-
 			var opts = _self.options;
+
+			if(opts.isMaximize){return};
+
+			e = Util.event.getEvent(e);
 
 			startAxis = Util.event.getPageAxis(e);
 			startPosition = {
@@ -173,6 +175,12 @@ SimpleWindow.prototype = {
 		}
 	},
 
+	// 设置是否可拖动
+	toggleDragAble : function(isDragable){
+		isDragable = isDragable === undefined ? !this.options.isDragable : isDragable;
+		this.options.isDragable =isDragable;
+		this.winHeader.style.cursor = isDragable ? "move" : "default"
+	},
 
 	// 移动到指定位置
 	moveTo : function(left, top) {
@@ -218,7 +226,8 @@ SimpleWindow.prototype = {
 		);
 
 		this.moveTo(0, 0);
-		this.options.isMaximize = true;
+		opts.isMaximize = true;
+		this.toggleDragAble(false);
 	},
 
 	// 恢复窗口大小
@@ -228,6 +237,7 @@ SimpleWindow.prototype = {
 		this.moveTo(preStatus.left, preStatus.top);
 
 		this.options.isMaximize = false;
+		this.toggleDragAble(true);
 	},
 
 	// 折叠窗口
@@ -235,6 +245,7 @@ SimpleWindow.prototype = {
 		
 	},
 
+	// 双击切换最大化
 	_headerMax : function(){
 		var _self = this;
 		Util.event.on(this.winHeader, 'dblclick', function(){
