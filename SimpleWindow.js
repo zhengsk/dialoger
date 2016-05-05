@@ -107,16 +107,24 @@ SimpleWindow.prototype = {
 		Util.event.on(_self.winHeader, "mousedown", dragDown);
 
 		var startPosition, // 窗口起始位置
-			startAxis	// 鼠标起始位置
+			startAxis,	// 鼠标起始位置
+			parentSize
 
 		// 点击拖动绑定
 		function dragDown(e) {
 			e = Util.event.getEvent(e);
 
+			var opts = _self.options;
+
 			startAxis = Util.event.getPageAxis(e);
 			startPosition = {
-				left : _self.options.left,
-				top : _self.options.top
+				left : opts.left,
+				top : opts.top
+			}
+
+			parentSize = {
+				width : opts.parent.clientWidth,
+				height : opts.parent.clientHeight
 			}
 
 			Util.event.on(document, 'mousemove', dragMove);
@@ -133,10 +141,26 @@ SimpleWindow.prototype = {
 				y : endAxis.y - startAxis.y
 			}
 
-			_self.moveTo(
-				startPosition.left + changedAxis.x,
-				startPosition.top + changedAxis.y
-			);
+			var resultLeft = startPosition.left + changedAxis.x;
+			var resultTop = startPosition.top + changedAxis.y;
+
+			if(resultLeft < 0){
+				resultLeft = 0;
+			} 
+
+			if(resultTop < 0){
+				resultTop = 0;
+			}
+
+			if(resultLeft + _self.options.width > parentSize.width){
+				resultLeft = parentSize.width - _self.options.width
+			}
+
+			if(resultTop + _self.options.height > parentSize.height){
+				resultTop = parentSize.height - _self.options.height
+			}
+
+			_self.moveTo(resultLeft, resultTop);
 		}
 
 		// 停止拖动
@@ -158,8 +182,8 @@ SimpleWindow.prototype = {
 	// 改变大小
 	resizeTo : function(width, height) {
 		var style = this.winElement.style;
-		width !== null && (style.width = width + "px");
-		height !== null && (style.height = height + "px");
+		width !== null && (style.width = width + "px", this.options.width = width);
+		height !== null && (style.height = height + "px", this.options.height = height);
 	},
 
 
