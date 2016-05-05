@@ -47,8 +47,7 @@ SimpleWindow.prototype = {
 
 		this._create(); // 创建窗口元素
 
-		this.moveTo(opts.left, opts.top);
-		this.resizeTo(opts.width, opts.height);
+		this._setStatus();
 	},
 
 	// 创建窗口
@@ -86,6 +85,18 @@ SimpleWindow.prototype = {
 	},
 
 	
+	_setStatus : function(argument) {
+		var opts = this.options;
+		
+		this.moveTo(opts.left, opts.top);
+		this.resizeTo(opts.width, opts.height);
+
+		this.show();
+
+		this.maximize();
+
+		this.collapse();
+	},
 
 
 	// 移动到指定位置
@@ -103,24 +114,32 @@ SimpleWindow.prototype = {
 	},
 
 
-
-
-	// 显示
-	show : function() {
-		this.winElement.style.display = "block";
-		this.isVisible = false;
-	},
-
-	hide : function() {
-		this.winElement.style.display = "none";
-		this.isVisible = true;
+	// 设置显示状态
+	show : function(isShow) {
+		isShow = isShow === undefined ? this.options.isVisible : isShow;
+		this.winElement.style.display = (isShow ? "block" : "none");
+		this.isVisible = isShow;
 	},
 
 	// 切换显示状态
 	toggle : function() {
-		this[this.isVisible ? "hide" : "show"]()
+		this.show[!this.isVisible]()
 	},
 
+	// 最大化窗口
+	maximize : function() {
+		
+	},
+
+	// 恢复窗口大小
+	restore : function() {
+		// body...
+	},
+
+	// 折叠窗口
+	collapse : function() {
+		
+	},
 
 	// 销毁窗口
 	destory : function() {

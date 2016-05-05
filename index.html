@@ -4,18 +4,21 @@
 	<title>窗口</title>
 	<link rel="stylesheet" href="reset.css">
 	<link rel="stylesheet" href="SimpleWindow.css">
+	<style type="text/css">
+		.window-wrapper{
+			position: relative;
+			width: 80%;
+			height: 800px;
+			margin: 50px auto;
+			border: 2px solid #333;
+		}
+	</style>
 </head>
 <body>
 	
-	<!-- <div class="simple-window">
-		<div class="simple-window-container">
-			<div class="simple-window-header">标题</div>
-			<div class="simple-window-body">
-				内容
-			</div>
-			<div class="simple-window-footer">状态栏</div>
-		</div>
-	</div> -->
+	<div class="window-wrapper" id="windowWrapper">
+		
+	</div>
 
 
 	<script src="Util.js"></script>
@@ -28,15 +31,16 @@
 			left : 200,
 			top : 50,
 			width : 200,
-			height : 150
+			height : 150,
+			parent : document.getElementById('windowWrapper')
 		});
 
 
-		var win02 = new SimpleWindow({
-			left : 400,
+		// var win02 = new SimpleWindow({
+		// 	left : 400,
 
-			width : 400
-		});
+		// 	width : 400
+		// });
 
 	</script>
 </body>
