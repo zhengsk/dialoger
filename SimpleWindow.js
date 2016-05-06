@@ -328,6 +328,7 @@ SimpleWindow.prototype = {
 		var startPosition, // 窗口起始位置
 			startSize,	// 窗体起始大小
 			startAxis,	// 鼠标起始位置
+			parentSize,	// 父容器内容大小
 			opts = this.options;
 
 		function resizeDown(e){
@@ -346,6 +347,11 @@ SimpleWindow.prototype = {
 			startAxis = {
 				x : e.clientX,
 				y : e.clientY
+			}
+
+			parentSize = {
+				width : opts.parent.clientWidth,
+				height : opts.parent.clientHeight
 			}
 
 			Util.event.on(document, 'mousemove', resizeMove);
@@ -417,6 +423,22 @@ SimpleWindow.prototype = {
 			width = Math.max(opts.minWidth , width);
 			height = Math.min(opts.maxHeight , height);
 			height = Math.max(opts.minHeight , height);
+
+			// 拖动时边界限制
+			if(width + left > parentSize.width){width = parentSize.width - left}
+			if(height + top > parentSize.height){height = parentSize.height - top}
+			if(top < 0){top = 0}
+			if(left < 0){left = 0}
+
+			if(_self.direction == "W"){
+				if(width <= opts.minWidth){
+					left = startPosition.left + startSize.width - opts.minWidth
+				}else if(width >= opts.maxWidth){
+					left = startPosition.left - opts.maxWidth + startSize.width
+				}
+			}
+
+
 
 			_self.resizeTo(width, height);
 			_self.moveTo(left, top);
