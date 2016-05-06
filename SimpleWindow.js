@@ -16,6 +16,11 @@ SimpleWindow.defaultOptions = {
     left: 200,
     top: 200,
 
+    minWidth : 100,
+    minHeight : 100,
+    maxWidth : 400,
+    maxHeight : 400,
+
     header : "title",
     body : "body",
     footer : "footer"
@@ -406,6 +411,12 @@ SimpleWindow.prototype = {
 				default : 
 					return false;
 			}
+
+			// 最大最小限制
+			width = Math.min(opts.maxWidth , width);
+			width = Math.max(opts.minWidth , width);
+			height = Math.min(opts.maxHeight , height);
+			height = Math.max(opts.minHeight , height);
 
 			_self.resizeTo(width, height);
 			_self.moveTo(left, top);
