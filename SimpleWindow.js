@@ -179,7 +179,7 @@ SimpleWindow.prototype = {
 	toggleDragAble : function(isDragable){
 		isDragable = isDragable === undefined ? !this.options.isDragable : isDragable;
 		this.options.isDragable =isDragable;
-		this.winHeader.style.cursor = isDragable ? "move" : "default"
+		this.winElement.className = isDragable ? "simple-window" : "simple-window simple-window-disdrag-able"
 	},
 
 	// 移动到指定位置
