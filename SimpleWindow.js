@@ -51,7 +51,7 @@ SimpleWindow.prototype = {
 
 		this._headerMax(); // 双击最大化
 
-		this._setDragCursor(); // 设置鼠标样式
+		this._setDragResize(); // 设置拖拽缩小放大窗体
 	},
 
 	// 创建窗口
@@ -112,7 +112,7 @@ SimpleWindow.prototype = {
 
 		var startPosition, // 窗口起始位置
 			startAxis,	// 鼠标起始位置
-			parentSize
+			parentSize // 拖动范围大小
 
 		// 点击拖动绑定
 		function dragDown(e) {
@@ -298,6 +298,65 @@ SimpleWindow.prototype = {
 			}
 			winStyle.cursor = cursor;
 		}
+	},
+
+	// 拖动 缩小放大窗体
+	_setDragResize : function(){
+		var _self = this;
+		
+		this._setDragCursor(); // 设置鼠标样式
+
+		Util.event.on(this.winElement, "mousedown", resizeDown);
+
+		var startPosition, // 窗口起始位置
+			startSize,	// 窗体起始大小
+			startAxis,	// 鼠标起始位置
+			opts = this.options;
+
+		function resizeDown(e){
+			e = Util.event.getEvent(e);
+
+			startPosition = {
+				left : opts.left,
+				top : opts.top
+			}
+
+			startSize = {
+				width : opts.width,
+				height : opts.height
+			}
+
+			startAxis = {
+				x : e.clientX,
+				y : e.clientY
+			}
+
+			Util.event.on(document, 'mousemove', resizeMove);
+			Util.event.on(document, 'mouseup', resizeStop);
+		}
+
+		function resizeMove(e){
+			e = Util.event.getEvent(e);
+			var changedAxis = {
+				x : e.clientX - startAxis.x,
+				y : e.clientY - startAxis.y
+			}
+
+			_self.resizeTo(
+				startSize.width + changedAxis.x,
+				startSize.height + changedAxis.y
+			)
+			
+		}
+
+		function resizeStop(){
+
+			Util.event.off(document, 'mousemove', resizeMove);
+			Util.event.off(document, 'mouseup', resizeStop);
+		}
+
+
+
 	}
 
 }
