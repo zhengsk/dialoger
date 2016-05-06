@@ -267,43 +267,55 @@ SimpleWindow.prototype = {
 
 		Util.event.on(this.winElement, "mousemove", changeDragCursor);
 
-		var winStyle = _self.winElement.style, cursor;
+		var winStyle = _self.winElement.style, cursor, direction;
 
 		function changeDragCursor(e){
+
+			if(_self.isDraging){return} // 正在拖动，直接返回
+
 			e = Util.event.getEvent(e);
 			var winEdge = _self.winElement.getBoundingClientRect();
 
 			if(e.clientX > winEdge.right - 8){ // E
 				cursor = "e-resize";
-
+				direction = "E";
 				if(e.clientY > winEdge.bottom - 8){ // SE
 					cursor = "se-resize";
+					direction = "SE";
 				}else if(e.clientY < winEdge.top + 8){ // NE
 					cursor = "ne-resize";
+					direction = "NE";
 				}
 			}else if(e.clientX < winEdge.left + 8){ // W
 				cursor = "w-resize";
+				direction = "W";
 
 				if(e.clientY > winEdge.bottom - 8){ // SW
 					cursor = "sw-resize";
+					direction = "SW";
 				}else if(e.clientY < winEdge.top + 8){ // NW
 					cursor = "nw-resize";
+					direction = "NW";
 				}
 			}else if(e.clientY > winEdge.bottom - 8){ // S
 				cursor = "s-resize";
+				direction = "S";
 			}else if(e.clientY < winEdge.top + 8){ // N
 				cursor = "n-resize";
+				direction = "N";
 			}else{
 				cursor = "default";
+				direction = false;
 			}
 			winStyle.cursor = cursor;
+			_self.direction = direction;
 		}
 	},
 
 	// 拖动 缩小放大窗体
 	_setDragResize : function(){
 		var _self = this;
-		
+
 		this._setDragCursor(); // 设置鼠标样式
 
 		Util.event.on(this.winElement, "mousedown", resizeDown);
@@ -336,21 +348,29 @@ SimpleWindow.prototype = {
 		}
 
 		function resizeMove(e){
+			_self.isDraging = true;
 			e = Util.event.getEvent(e);
 			var changedAxis = {
 				x : e.clientX - startAxis.x,
 				y : e.clientY - startAxis.y
 			}
 
-			_self.resizeTo(
-				startSize.width + changedAxis.x,
-				startSize.height + changedAxis.y
-			)
+			var width, height, left, top;
+
+			if(_self.direction === "E"){
+				console.info(changedAxis.x);
+				width = startSize.width + changedAxis.x;
+				height = startSize.height;
+			}
+			
+			// console.log(width);
+
+			_self.resizeTo(width, height);
 			
 		}
 
 		function resizeStop(){
-
+			_self.isDraging = false;
 			Util.event.off(document, 'mousemove', resizeMove);
 			Util.event.off(document, 'mouseup', resizeStop);
 		}
