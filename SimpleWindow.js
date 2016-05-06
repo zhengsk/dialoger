@@ -21,12 +21,11 @@ SimpleWindow.defaultOptions = {
     maxWidth : 300,
     maxHeight : 300,
 
-    afterInit : function(){},
-    beforeResize : function(){},
-
     header : "title",
     body : "body",
     footer : "footer"
+
+
 }
 
 function SimpleWindow(opts) {
@@ -53,7 +52,7 @@ SimpleWindow.prototype = {
 
 		this._create(); // 创建窗口元素
 
-		this._setStatus(); // 设置窗口状态
+		this._setStatus();
 
 		this._headerMax(); // 双击最大化
 
@@ -62,11 +61,8 @@ SimpleWindow.prototype = {
 		this._setToInstance(); // 放到窗口实例集合中
 
 		this._bindSetToFront(); // 绑定点击 修改层级（移动到最前）
-
-		this.options.afterInit.call(this);
 	},
 
-	// 窗口实例添加到 实例集合中
 	_setToInstance : function(){
 		if(!this.constructor.allInstance){
 			this.constructor.allInstance = [];
@@ -74,7 +70,6 @@ SimpleWindow.prototype = {
 		this.constructor.allInstance.push(this);
 	},
 
-	// 绑定点击移到最前
 	_bindSetToFront : function(){
 		var _self = this;
 		var allInstance = this.constructor.allInstance;
@@ -136,7 +131,7 @@ SimpleWindow.prototype = {
 		this.options.parent.appendChild(winElement);
 	},
 
-	// 设置窗口状态
+	
 	_setStatus : function(argument) {
 		var opts = this.options;
 
