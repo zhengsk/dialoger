@@ -50,6 +50,8 @@ SimpleWindow.prototype = {
 		this._setStatus();
 
 		this._headerMax(); // 双击最大化
+
+		this._setDragCursor(); // 设置鼠标样式
 	},
 
 	// 创建窗口
@@ -256,6 +258,46 @@ SimpleWindow.prototype = {
 	// 销毁窗口
 	destory : function() {
 		this.winElement.parentNode.removeChild(this.winElement);
+	},
+
+	// 设置缩放鼠标样式
+	_setDragCursor : function(){
+
+		var _self = this;
+
+		Util.event.on(this.winElement, "mousemove", changeDragCursor);
+
+		var winStyle = _self.winElement.style, cursor;
+
+		function changeDragCursor(e){
+			e = Util.event.getEvent(e);
+			var winEdge = _self.winElement.getBoundingClientRect();
+
+			if(e.clientX > winEdge.right - 8){ // E
+				cursor = "e-resize";
+
+				if(e.clientY > winEdge.bottom - 8){ // SE
+					cursor = "se-resize";
+				}else if(e.clientY < winEdge.top + 8){ // NE
+					cursor = "ne-resize";
+				}
+			}else if(e.clientX < winEdge.left + 8){ // W
+				cursor = "w-resize";
+
+				if(e.clientY > winEdge.bottom - 8){ // SW
+					cursor = "sw-resize";
+				}else if(e.clientY < winEdge.top + 8){ // NW
+					cursor = "nw-resize";
+				}
+			}else if(e.clientY > winEdge.bottom - 8){ // S
+				cursor = "s-resize";
+			}else if(e.clientY < winEdge.top + 8){ // N
+				cursor = "n-resize";
+			}else{
+				cursor = "default";
+			}
+			winStyle.cursor = cursor;
+		}
 	}
 
 }
