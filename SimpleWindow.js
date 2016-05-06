@@ -338,6 +338,8 @@ SimpleWindow.prototype = {
 				height : opts.height
 			}
 
+			console.warn(startSize.width);
+
 			startAxis = {
 				x : e.clientX,
 				y : e.clientY
@@ -358,9 +360,11 @@ SimpleWindow.prototype = {
 			var width, height, left, top;
 
 			if(_self.direction === "E"){
-				console.info(changedAxis.x);
+				console.info(startSize.width,changedAxis.x);
 				width = startSize.width + changedAxis.x;
 				height = startSize.height;
+			}else{
+				return;
 			}
 			
 			// console.log(width);
