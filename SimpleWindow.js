@@ -57,6 +57,44 @@ SimpleWindow.prototype = {
 		this._headerMax(); // 双击最大化
 
 		this._setDragResize(); // 设置拖拽缩小放大窗体
+
+		this._setToInstance(); // 放到窗口实例集合中
+
+		this._bindSetToFront(); // 绑定点击 修改层级（移动到最前）
+	},
+
+	_setToInstance : function(){
+		if(!this.constructor.allInstance){
+			this.constructor.allInstance = [];
+		}
+		this.constructor.allInstance.push(this);
+	},
+
+	_bindSetToFront : function(){
+		var _self = this;
+		var allInstance = this.constructor.allInstance;
+		Util.event.on(this.winElement, 'mousedown', function(){
+			for(var i = 0, j = allInstance.length; i < j; i++){
+				if(allInstance[i] === _self){
+					allInstance.splice(i,1);
+					allInstance.push(_self);
+				}
+
+				allInstance[i].winElement.style.zIndex = 
+					_self.options.zIndex + (5 * i);
+			}
+		});
+	},
+
+	// 初始设置 窗口的 层级 z-index
+	_setToFront : function(){
+		var len = 0;
+
+		if(this.constructor.allInstance){
+			len = this.constructor.allInstance.length;
+		}
+
+		this.winElement.style.zIndex = this.options.zIndex + (5 * len);
 	},
 
 	// 创建窗口
@@ -102,11 +140,11 @@ SimpleWindow.prototype = {
 
 		this.show();
 
-		// this.maximize();
-
 		this.collapse();
 
 		this.setDragAble();
+
+		this._setToFront(); // 设置层级
 	},
 
 	// 设置可拖动
@@ -469,7 +507,6 @@ SimpleWindow.prototype = {
 			if(top < 0){top = 0}
 			if(left < 0){left = 0}
 
-
 			_self.resizeTo(width, height);
 			_self.moveTo(left, top);
 		}
@@ -479,9 +516,6 @@ SimpleWindow.prototype = {
 			Util.event.off(document, 'mousemove', resizeMove);
 			Util.event.off(document, 'mouseup', resizeStop);
 		}
-
-
-
 	}
 
 }
