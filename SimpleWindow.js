@@ -11,15 +11,15 @@ SimpleWindow.defaultOptions = {
 
 	parent : document.body,
 
-	width: 300,
-    height: 300,
+	width: 250,
+    height: 250,
     left: 200,
     top: 200,
 
     minWidth : 100,
     minHeight : 100,
-    maxWidth : 400,
-    maxHeight : 400,
+    maxWidth : 300,
+    maxHeight : 300,
 
     header : "title",
     body : "body",
@@ -424,13 +424,8 @@ SimpleWindow.prototype = {
 			height = Math.min(opts.maxHeight , height);
 			height = Math.max(opts.minHeight , height);
 
-			// 拖动时边界限制
-			if(width + left > parentSize.width){width = parentSize.width - left}
-			if(height + top > parentSize.height){height = parentSize.height - top}
-			if(top < 0){top = 0}
-			if(left < 0){left = 0}
 
-			if(_self.direction == "W"){
+			if(_self.direction == "W" || _self.direction == "NW" || _self.direction == "SW"){
 				if(width <= opts.minWidth){
 					left = startPosition.left + startSize.width - opts.minWidth
 				}else if(width >= opts.maxWidth){
@@ -438,6 +433,41 @@ SimpleWindow.prototype = {
 				}
 			}
 
+			if(_self.direction == "N" || _self.direction == "NE" || _self.direction == "NW"){
+				if(height <= opts.minHeight){
+					top = startPosition.top + startSize.height - opts.minHeight
+				}else if(height >= opts.maxHeight){
+					top = startPosition.top - opts.maxHeight + startSize.height
+				}
+			}
+
+			if(left <= 0){
+				switch(_self.direction){
+					case "W" :
+					case "NW":
+					case "SW" :
+						width = startPosition.left + startSize.width;
+						left = 0;
+						break;
+				}
+			}
+
+			if(top <= 0){
+				switch(_self.direction){
+					case "N" :
+					case "NW":
+					case "NE" :
+						height = startPosition.top + startSize.height;
+						top = 0;
+						break;
+				}
+			}
+
+			// 拖动时边界限制
+			if(width + left > parentSize.width){width = parentSize.width - left}
+			if(height + top > parentSize.height){height = parentSize.height - top}
+			if(top < 0){top = 0}
+			if(left < 0){left = 0}
 
 
 			_self.resizeTo(width, height);
