@@ -338,8 +338,6 @@ SimpleWindow.prototype = {
 				height : opts.height
 			}
 
-			console.warn(startSize.width);
-
 			startAxis = {
 				x : e.clientX,
 				y : e.clientY
@@ -357,20 +355,60 @@ SimpleWindow.prototype = {
 				y : e.clientY - startAxis.y
 			}
 
-			var width, height, left, top;
+			var width = startSize.width, 
+				height = startSize.height, 
+				left = startPosition.left, 
+				top = startPosition.top;
 
-			if(_self.direction === "E"){
-				console.info(startSize.width,changedAxis.x);
-				width = startSize.width + changedAxis.x;
-				height = startSize.height;
-			}else{
-				return;
+			switch(_self.direction){
+				case "E" : 
+					width = startSize.width + changedAxis.x;
+					break;
+
+				case "S" :
+					height = startSize.height + changedAxis.y;
+					break;
+
+				case "W" :
+					width = startSize.width - changedAxis.x;
+					left = startPosition.left + changedAxis.x;
+					break;
+
+				case "N" :
+					height = startSize.height - changedAxis.y;
+					top = startPosition.top + changedAxis.y;
+					break;
+
+				case "SE" :
+					height = startSize.height + changedAxis.y;
+					width = startSize.width + changedAxis.x;
+					break;
+
+				case "SW" :
+					width = startSize.width - changedAxis.x;
+					height = startSize.height + changedAxis.y;
+					left = startPosition.left + changedAxis.x;
+					break;
+
+				case "NE" :
+					width = startSize.width + changedAxis.x;
+					height = startSize.height - changedAxis.y;
+					top = startPosition.top + changedAxis.y;
+					break;
+
+				case "NW" :
+					width = startSize.width - changedAxis.x;
+					left = startPosition.left + changedAxis.x;
+					height = startSize.height - changedAxis.y;
+					top = startPosition.top + changedAxis.y;
+					break;
+
+				default : 
+					return false;
 			}
-			
-			// console.log(width);
 
 			_self.resizeTo(width, height);
-			
+			_self.moveTo(left, top);
 		}
 
 		function resizeStop(){
