@@ -17,14 +17,6 @@
 
 }
 
-.simple-window-disdrag-able .simple-window-header{
-	cursor: default;
-}
-
-.simple-window-disdrag-able .simple-window-container{
-	border-color: #000;
-}
-
 .simple-window-container{
 	position: relative;
 	border: 2px solid #FF0F00;
