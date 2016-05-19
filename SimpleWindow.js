@@ -463,7 +463,7 @@ SimpleWindow.prototype = {
 			height = Math.max(opts.minHeight , height);
 
 
-			if(_self.direction == "W" || _self.direction == "NW" || _self.direction == "SW"){
+			if(_self.direction.indexOf("W") !== -1){
 				if(width <= opts.minWidth){
 					left = startPosition.left + startSize.width - opts.minWidth
 				}else if(width >= opts.maxWidth){
@@ -471,7 +471,7 @@ SimpleWindow.prototype = {
 				}
 			}
 
-			if(_self.direction == "N" || _self.direction == "NE" || _self.direction == "NW"){
+			if(_self.direction.indexOf("N") !== -1){
 				if(height <= opts.minHeight){
 					top = startPosition.top + startSize.height - opts.minHeight
 				}else if(height >= opts.maxHeight){
