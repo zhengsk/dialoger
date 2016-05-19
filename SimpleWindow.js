@@ -7,27 +7,28 @@ SimpleWindow.defaultOptions = {
 	isCollapse : false,	// 是否缩起
 	isMaximize : false, // 是否最大化
 
-	zIndex : 1000,
+	zIndex : 1000,	// css z-index 起始值
 
-	parent : document.body,
+	parent : document.body, // 父元素
 
+	// 大小和位置
 	width: 250,
-    height: 250,
-    left: 200,
-    top: 200,
+	height: 250,
+	left: 200,
+	top: 200,
 
-    minWidth : 100,
-    minHeight : 100,
-    maxWidth : 300,
-    maxHeight : 300,
+	// 最大和最小范围限制
+	minWidth : 100,
+	minHeight : 100,
+	maxWidth : 300,
+	maxHeight : 300,
 
-    header : "title",
-    body : "body",
-    footer : "footer",
+	// 默认窗体信息
+	header : "title",
+	body : "body",
+	footer : "footer",
 
-    edgeSize : 10 // 可缩放大小边界区域
-
-
+	edgeSize : 10 // 可缩放大小边界区域
 }
 
 function SimpleWindow(opts) {
