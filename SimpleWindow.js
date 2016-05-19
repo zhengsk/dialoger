@@ -23,7 +23,9 @@ SimpleWindow.defaultOptions = {
 
     header : "title",
     body : "body",
-    footer : "footer"
+    footer : "footer",
+
+    edgeSize : 10 // 可缩放大小边界区域
 
 
 }
@@ -310,7 +312,7 @@ SimpleWindow.prototype = {
 
 		Util.event.on(this.winElement, "mousemove", changeDragCursor);
 
-		var winStyle = _self.winElement.style, cursor, direction;
+		var winStyle = _self.winElement.style, cursor, direction, edgeSize = _self.options.edgeSize;
 
 		function changeDragCursor(e){
 
@@ -319,37 +321,41 @@ SimpleWindow.prototype = {
 			e = Util.event.getEvent(e);
 			var winEdge = _self.winElement.getBoundingClientRect();
 
-			if(e.clientX > winEdge.right - 8){ // E
+			if(e.clientX > winEdge.right - edgeSize){ // E
 				cursor = "e-resize";
 				direction = "E";
-				if(e.clientY > winEdge.bottom - 8){ // SE
+				if(e.clientY > winEdge.bottom - edgeSize){ // SE
 					cursor = "se-resize";
 					direction = "SE";
-				}else if(e.clientY < winEdge.top + 8){ // NE
+				}else if(e.clientY < winEdge.top + edgeSize){ // NE
 					cursor = "ne-resize";
 					direction = "NE";
 				}
-			}else if(e.clientX < winEdge.left + 8){ // W
+			}else if(e.clientX < winEdge.left + edgeSize){ // W
 				cursor = "w-resize";
 				direction = "W";
 
-				if(e.clientY > winEdge.bottom - 8){ // SW
+				if(e.clientY > winEdge.bottom - edgeSize){ // SW
 					cursor = "sw-resize";
 					direction = "SW";
-				}else if(e.clientY < winEdge.top + 8){ // NW
+				}else if(e.clientY < winEdge.top + edgeSize){ // NW
 					cursor = "nw-resize";
 					direction = "NW";
 				}
-			}else if(e.clientY > winEdge.bottom - 8){ // S
+			}else if(e.clientY > winEdge.bottom - edgeSize){ // S
 				cursor = "s-resize";
 				direction = "S";
-			}else if(e.clientY < winEdge.top + 8){ // N
+			}else if(e.clientY < winEdge.top + edgeSize){ // N
 				cursor = "n-resize";
 				direction = "N";
 			}else{
 				cursor = "default";
 				direction = false;
 			}
+
+			_self.winHeader.style.cursor = 
+				(direction ? "inherit" : "move");
+
 			winStyle.cursor = cursor;
 			_self.direction = direction;
 		}
