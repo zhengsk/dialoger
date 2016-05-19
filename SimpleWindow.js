@@ -479,26 +479,14 @@ SimpleWindow.prototype = {
 				}
 			}
 
-			if(left <= 0){
-				switch(_self.direction){
-					case "W" :
-					case "NW":
-					case "SW" :
-						width = startPosition.left + startSize.width;
-						left = 0;
-						break;
-				}
+			if(left <= 0 && _self.direction.indexOf("W") !== -1){
+				width = startPosition.left + startSize.width;
+				left = 0;
 			}
 
-			if(top <= 0){
-				switch(_self.direction){
-					case "N" :
-					case "NW":
-					case "NE" :
-						height = startPosition.top + startSize.height;
-						top = 0;
-						break;
-				}
+			if(top <= 0 _self.direction.indexOf("N") !== -1){
+				height = startPosition.top + startSize.height;
+				top = 0;
 			}
 
 			// 拖动时边界限制
