@@ -314,7 +314,7 @@ SimpleWindow.prototype = {
 
 		function changeDragCursor(e){
 
-			if(_self.isDraging){return} // 正在拖动，直接返回
+			if(_self.isDraging || _self.options.isMaximize){return} // 正在拖动或最大化，直接返回
 
 			e = Util.event.getEvent(e);
 			var winEdge = _self.winElement.getBoundingClientRect();
@@ -484,7 +484,7 @@ SimpleWindow.prototype = {
 				left = 0;
 			}
 
-			if(top <= 0 _self.direction.indexOf("N") !== -1){
+			if(top <= 0 && _self.direction.indexOf("N") !== -1){
 				height = startPosition.top + startSize.height;
 				top = 0;
 			}
