@@ -28,7 +28,7 @@ SimpleWindow.defaultOptions = {
 	body : "body",
 	footer : "footer",
 
-	edgeSize : 10 // 可缩放大小边界区域
+	edgeSize : 8 // 可缩放大小边界区域
 }
 
 function SimpleWindow(opts) {
