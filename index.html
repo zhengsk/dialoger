@@ -89,7 +89,11 @@
 					var currentAngle = getAngle(centerPoint, currentPoint);
 					
 					var changedAngle = currentAngle - srcAngle;
-					
+
+					if(e.shiftKey){ // Change each 10 degree
+						changedAngle = Math.round(changedAngle / 10) * 10;
+					}
+
 					rotateMatrix = mat2d.rotate(mat2d.create(), (winEle._preRotateMatrix || mat2d.create()), Math.PI / 180 * changedAngle);
 
 					winEle.style.transform = mat2d.styleStr(rotateMatrix);
@@ -109,14 +113,19 @@
 			}
 		});
 
-		// get rotate angle
+		// Get rotate angle.
 		function getAngle(sourcePoint, currentPoint){
 			var pointChange = {
 				x : currentPoint.x - sourcePoint.x,
 				y : sourcePoint.y - currentPoint.y
 			}
 
-			return Math.atan(pointChange.x/pointChange.y)/Math.PI*180
+			var angle = Math.atan(pointChange.x/pointChange.y)/Math.PI*180
+			
+			pointChange.x < 0 && pointChange.y > 0 && (angle += 360)
+			pointChange.y < 0 && (angle += 180)
+
+			return angle;
 		}
 
 	</script>
