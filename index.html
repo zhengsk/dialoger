@@ -26,7 +26,8 @@
 	<br/><br/><br/><br/><br/><br/><br/>
 	<br/><br/><br/><br/><br/><br/><br/>
 	<h3>SimpleWindow</h3>
-
+	
+	<script type="text/javascript" src="matrix.js"></script>
 	<script src="Util.js"></script>
 	<script src="SimpleWindow.js"></script>
 
@@ -44,6 +45,79 @@
 		});
 
 		var win03 = new SimpleWindow();
+
+
+		Util.event.on(document.body, "mousedown", function mousedown(e) {
+			var targetEle = e.target;
+			if([].slice.call(targetEle.classList,0).indexOf("simple-window-body") >= 0){ // Target is window body.
+				var srcPoint = {x : e.clientX, y : e.clientY}; // store srcPoint
+
+				// To save window element node rotate matrix value.
+				var rotateMatrix;
+
+				// Get window element node.
+				var winEle = (function(){
+					var ele = targetEle;
+					while(ele){
+						if(ele.className === "simple-window"){
+							return ele
+						}else{
+							ele = ele.parentNode
+						}
+					}
+				})();
+
+				// Get window element node center point, The rotate origin.
+				var centerPoint = (function(){
+					var rect = winEle.getBoundingClientRect();
+					return {
+						x : (rect.right + rect.left) / 2,
+						y : (rect.bottom + rect.top) / 2
+					}
+				})();
+
+				// The mousedown angle
+				var srcAngle = getAngle(centerPoint, srcPoint);
+
+				console.info(srcAngle);
+
+				// Bind mousemove event.
+				Util.event.on(document.body, "mousemove", mousemoveEvent);
+
+				function mousemoveEvent(e){
+					var currentPoint = {x : e.clientX, y : e.clientY};
+					var currentAngle = getAngle(centerPoint, currentPoint);
+					
+					var changedAngle = currentAngle - srcAngle;
+					
+					rotateMatrix = mat2d.rotate(mat2d.create(), (winEle._preRotateMatrix || mat2d.create()), Math.PI / 180 * changedAngle);
+
+					winEle.style.transform = mat2d.styleStr(rotateMatrix);
+				}
+
+
+				// Unbind mousemove event.
+				Util.event.on(document.body, "mouseup", mouseupEvent);
+
+				function mouseupEvent(e){
+					// Save preRotateMatrix value.
+					winEle._preRotateMatrix = rotateMatrix;
+					Util.event.off(document.body, "mousemove", mousemoveEvent);
+					Util.event.off(document.body, "mouseup", mouseupEvent);
+				}
+
+			}
+		});
+
+		// get rotate angle
+		function getAngle(sourcePoint, currentPoint){
+			var pointChange = {
+				x : currentPoint.x - sourcePoint.x,
+				y : sourcePoint.y - currentPoint.y
+			}
+
+			return Math.atan(pointChange.x/pointChange.y)/Math.PI*180
+		}
 
 	</script>
 </body>
