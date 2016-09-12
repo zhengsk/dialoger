@@ -55,6 +55,9 @@
 				// To save window element node rotate matrix value.
 				var rotateMatrix;
 
+				// Current changedAngle.
+				var changedAngle;
+
 				// Get window element node.
 				var winEle = (function(){
 					var ele = targetEle;
@@ -66,6 +69,8 @@
 						}
 					}
 				})();
+
+				winEle._preRotateAngle = winEle._preRotateAngle || 0;
 
 				// Get window element node center point, The rotate origin.
 				var centerPoint = (function(){
@@ -88,10 +93,10 @@
 					var currentPoint = {x : e.clientX, y : e.clientY};
 					var currentAngle = getAngle(centerPoint, currentPoint);
 					
-					var changedAngle = currentAngle - srcAngle;
+					changedAngle = currentAngle - srcAngle;
 
-					if(e.shiftKey){ // Change each 10 degree
-						changedAngle = Math.round(changedAngle / 10) * 10;
+					if(e.shiftKey){ // Change each 5 degree
+						changedAngle = Math.round(changedAngle / 5) * 5;
 					}
 
 					rotateMatrix = mat2d.rotate(mat2d.create(), (winEle._preRotateMatrix || mat2d.create()), Math.PI / 180 * changedAngle);
@@ -104,8 +109,10 @@
 				Util.event.on(document.body, "mouseup", mouseupEvent);
 
 				function mouseupEvent(e){
-					// Save preRotateMatrix value.
+					// Save preRotateMatrix value and allChangeAngle.
 					winEle._preRotateMatrix = rotateMatrix;
+					winEle._preRotateAngle += changedAngle;
+
 					Util.event.off(document.body, "mousemove", mousemoveEvent);
 					Util.event.off(document.body, "mouseup", mouseupEvent);
 				}
