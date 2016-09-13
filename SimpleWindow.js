@@ -418,20 +418,27 @@ SimpleWindow.prototype = {
 
 			switch(_self.direction){
 				case "E" : 
+					var _preRotateAngle = _self.winElement._preRotateAngle;
+
+					changedAxis.x = changedAxis.x / Math.cos(Math.PI / 180 * -_preRotateAngle);
+
 					width = startSize.width + changedAxis.x;
 
 					// Fix rotate reszie width.
-					var _preRotateAngle = _self.winElement._preRotateAngle;
 					left += changedAxis.x * Math.cos(Math.PI / 180 * -_preRotateAngle) / 2 - changedAxis.x/2;
 					top -= changedAxis.x * Math.sin(Math.PI / 180 * -_preRotateAngle) / 2;
 
 					break;
 
 				case "S" :
+					var _preRotateAngle = _self.winElement._preRotateAngle;
+
+					changedAxis.y = changedAxis.y / Math.cos(Math.PI / 180 * -_preRotateAngle);
+					
 					height = startSize.height + changedAxis.y;
 
+
 					// Fix rotate reszie height.
-					var _preRotateAngle = _self.winElement._preRotateAngle;
 					left += changedAxis.y * Math.sin(Math.PI / 180 * -_preRotateAngle) / 2;
 					top += changedAxis.y * Math.cos(Math.PI / 180 * -_preRotateAngle) / 2 - changedAxis.y/2;
 
