@@ -411,6 +411,9 @@ SimpleWindow.prototype = {
 				y : e.clientY - startAxis.y
 			}
 
+			var _preRotateAngle = _self.winElement._preRotateAngle;
+			var _radAgnle = Math.PI / 180 * -_preRotateAngle;
+
 			var width = startSize.width, 
 				height = startSize.height, 
 				left = startPosition.left, 
@@ -418,40 +421,55 @@ SimpleWindow.prototype = {
 
 			switch(_self.direction){
 				case "E" : 
-					var _preRotateAngle = _self.winElement._preRotateAngle;
 
-					changedAxis.x = changedAxis.x / Math.cos(Math.PI / 180 * -_preRotateAngle);
+					changedAxis.x = changedAxis.x / Math.cos(_radAgnle);
 
 					width = startSize.width + changedAxis.x;
 
 					// Fix rotate reszie width.
-					left += changedAxis.x * Math.cos(Math.PI / 180 * -_preRotateAngle) / 2 - changedAxis.x/2;
-					top -= changedAxis.x * Math.sin(Math.PI / 180 * -_preRotateAngle) / 2;
+					left += changedAxis.x * Math.cos(_radAgnle) / 2 - changedAxis.x/2;
+					top -= changedAxis.x * Math.sin(_radAgnle) / 2;
 
 					break;
 
 				case "S" :
-					var _preRotateAngle = _self.winElement._preRotateAngle;
 
-					changedAxis.y = changedAxis.y / Math.cos(Math.PI / 180 * -_preRotateAngle);
+					changedAxis.y = changedAxis.y / Math.cos(_radAgnle);
 					
 					height = startSize.height + changedAxis.y;
 
-
 					// Fix rotate reszie height.
-					left += changedAxis.y * Math.sin(Math.PI / 180 * -_preRotateAngle) / 2;
-					top += changedAxis.y * Math.cos(Math.PI / 180 * -_preRotateAngle) / 2 - changedAxis.y/2;
+					left += changedAxis.y * Math.sin(_radAgnle) / 2;
+					top += changedAxis.y * Math.cos(_radAgnle) / 2 - changedAxis.y/2;
 
 					break;
 
 				case "W" :
+
+					changedAxis.x = changedAxis.x / Math.cos(_radAgnle);
+
 					width = startSize.width - changedAxis.x;
-					left = startPosition.left + changedAxis.x;
+
+					left -= changedAxis.x * Math.cos(_radAgnle) / 2 - changedAxis.x/2 - Math.cos(_radAgnle) * changedAxis.x;
+					top += changedAxis.x * Math.sin(_radAgnle) / 2 - Math.sin(_radAgnle) * changedAxis.x;
+
+					// width = startSize.width - changedAxis.x;
+					// left = startPosition.left + changedAxis.x;
+
 					break;
 
 				case "N" :
+
+					changedAxis.y = changedAxis.y / Math.cos(_radAgnle);
+
 					height = startSize.height - changedAxis.y;
-					top = startPosition.top + changedAxis.y;
+
+					left -= changedAxis.y * Math.sin(_radAgnle) / 2  - Math.sin(_radAgnle) * changedAxis.y;
+					top -= changedAxis.y * Math.cos(_radAgnle) / 2 - changedAxis.y/2 - Math.cos(_radAgnle) * changedAxis.y;
+
+					// height = startSize.height - changedAxis.y;
+					// top = startPosition.top + changedAxis.y;
+
 					break;
 
 				case "SE" :
