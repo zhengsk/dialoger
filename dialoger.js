@@ -1,5 +1,5 @@
 
-SimpleWindow.defaultOptions = {
+Dialoger.defaultOptions = {
 
 	isVisible : true, 	// 是否可见
 	isDragable : true,	// 是否可拖动
@@ -31,9 +31,9 @@ SimpleWindow.defaultOptions = {
 	edgeSize : 8 // 可缩放大小边界区域
 }
 
-function SimpleWindow(opts) {
+function Dialoger(opts) {
 
-	
+
 	var options = this.constructor.defaultOptions;
 
 	// 扩展默认参数
@@ -45,9 +45,9 @@ function SimpleWindow(opts) {
 
 
 
-SimpleWindow.prototype = {
+Dialoger.prototype = {
 
-	constructor : SimpleWindow,
+	constructor : Dialoger,
 
 	// 初始化
 	init : function() {
@@ -83,7 +83,7 @@ SimpleWindow.prototype = {
 					allInstance.push(_self);
 				}
 
-				allInstance[i].winElement.style.zIndex = 
+				allInstance[i].winElement.style.zIndex =
 					_self.options.zIndex + (5 * i);
 			}
 		});
@@ -104,37 +104,37 @@ SimpleWindow.prototype = {
 	_create : function () {
 		var opts = this.options;
 
-		// simple-window
+		// dialoger-window
 		var winElement = this.winElement = document.createElement('div');
-		winElement.className = "simple-window";
+		winElement.className = "dialoger-window";
 
-		// simple-window-container
+		// dialoger-window-container
 		var winContainer = this.winContainer = document.createElement('div');
-		winContainer.className = "simple-window-container";
+		winContainer.className = "dialoger-window-container";
 		winElement.appendChild(winContainer);
 
-		// simple-window-header
+		// dialoger-window-header
 		var winHeader = this.winHeader = document.createElement('div');
-		winHeader.className = "simple-window-header";
+		winHeader.className = "dialoger-window-header";
 		winHeader.innerHTML = opts.header;
 		winContainer.appendChild(winHeader);
 
-		// simple-window-body
+		// dialoger-window-body
 		var winBody = this.winBody = document.createElement('div');
-		winBody.className = "simple-window-body";
+		winBody.className = "dialoger-window-body";
 		winBody.innerHTML = opts.body;
 		winContainer.appendChild(winBody);
 
-		// simple-window-footer
+		// dialoger-window-footer
 		var winFooter = this.winFooter = document.createElement('div');
-		winFooter.className = "simple-window-footer";
+		winFooter.className = "dialoger-window-footer";
 		winFooter.innerHTML = opts.footer;
 		winContainer.appendChild(winFooter);
 
 		this.options.parent.appendChild(winElement);
 	},
 
-	
+
 	_setStatus : function(argument) {
 		var opts = this.options;
 
@@ -198,7 +198,7 @@ SimpleWindow.prototype = {
 
 			if(resultLeft < 0){
 				resultLeft = 0;
-			} 
+			}
 
 			if(resultTop < 0){
 				resultTop = 0;
@@ -290,7 +290,7 @@ SimpleWindow.prototype = {
 
 	// 折叠窗口
 	collapse : function() {
-		
+
 	},
 
 	// 双击切换最大化
@@ -354,7 +354,7 @@ SimpleWindow.prototype = {
 				direction = false;
 			}
 
-			_self.winHeader.style.cursor = 
+			_self.winHeader.style.cursor =
 				(direction ? "inherit" : "move");
 
 			winStyle.cursor = cursor;
@@ -411,13 +411,13 @@ SimpleWindow.prototype = {
 				y : e.clientY - startAxis.y
 			}
 
-			var width = startSize.width, 
-				height = startSize.height, 
-				left = startPosition.left, 
+			var width = startSize.width,
+				height = startSize.height,
+				left = startPosition.left,
 				top = startPosition.top;
 
 			switch(_self.direction){
-				case "E" : 
+				case "E" :
 					width = startSize.width + changedAxis.x;
 					break;
 
@@ -459,7 +459,7 @@ SimpleWindow.prototype = {
 					top = startPosition.top + changedAxis.y;
 					break;
 
-				default : 
+				default :
 					return false;
 			}
 

@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<link rel="stylesheet" href="reset.css">
-	<link rel="stylesheet" href="SimpleWindow.css">
+	<link rel="stylesheet" href="dialoger.css">
 	<style type="text/css">
 		.window-wrapper{
 			position: relative;
@@ -17,33 +17,33 @@
 	</style>
 </head>
 <body>
-	<h1>SimpleWindow</h1>
+	<h1>Dialoger</h1>
 	<br>
 	<div class="window-wrapper" id="windowWrapper">
-		
+
 	</div>
 
 	<br/><br/><br/><br/><br/><br/><br/>
 	<br/><br/><br/><br/><br/><br/><br/>
-	<h3>SimpleWindow</h3>
+	<h3>Dialoger</h3>
 
 	<script src="Util.js"></script>
-	<script src="SimpleWindow.js"></script>
+	<script src="dialoger.js"></script>
 
 	<script type="text/javascript">
 
-		
-		var win01 = new SimpleWindow({
+
+		var win01 = new Dialoger({
 			top : 180,
 			left : 750,
 			parent : document.getElementById('windowWrapper')
 		});
 
-		var win02 = new SimpleWindow({
+		var win02 = new Dialoger({
 			parent : document.getElementById('windowWrapper')
 		});
 
-		var win03 = new SimpleWindow();
+		var win03 = new Dialoger();
 
 	</script>
 </body>
